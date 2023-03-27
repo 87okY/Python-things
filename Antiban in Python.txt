@@ -1,0 +1,24 @@
+import webbrowser
+import time
+import requests
+
+url = f"https://{location.host if location.host.startswith('dashboard') else 'play.blooket.com'}/api/gamequestionsets?gameId=6368436a976422d8a3f70cd7"
+
+response = requests.get(url)
+data = response.json()
+
+answers = data['questions'][0]['answers']
+cheat_answer = next((answer for answer in answers if "../cheats/global/preventSuspension.js" == answer['text']), None)
+if cheat_answer is None:
+    confirm("This cheat is outdated and might be bugged, would you still like to run it? You can find regularly updated cheats here https://github.com/Minesraft2/Blooket-Cheats")
+
+console.log("Blooket Cheats\n\tBy OneMinesraft2#5394", "color: #0bc2cf; font-size: 3rem", "color: #8000ff; font-size: 1rem")
+console.log("\tpreventSuspension.js", "color: #0bc2cf; font-size: 1rem")
+console.log("\tStar the github repo! https://github.com/Minesraft2/Blooket-Cheats", "color: #ffd000; font-size: 1rem")
+
+class MyHttpRequest(requests.Session):
+    def send(self, request, **kwargs):
+        if 'suspend' not in request.url:
+            return super(MyHttpRequest, self).send(request, **kwargs)
+
+requests.Session = MyHttpRequest
