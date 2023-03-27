@@ -1,0 +1,36 @@
+import requests
+
+async def main():
+    iframe = document.createElement('iframe')
+    document.body.append(iframe)
+    window.confirm = iframe.contentWindow.confirm.bind(window)
+    window.console.log = iframe.contentWindow.console.log.bind(window)
+    iframe.style.display = 'none'
+    url = 'https://' + (location.host + '/api/games' if location.host.startswith('dashboard') else 'play.blooket.com/api/gamequestionsets') + '?gameId=6368436a976422d8a3f70cd7'
+    response = await requests.get(url)
+    data = response.json()
+    answer = int('0' + [question['answers'][0] for question in data['questions'] if question['question'] == '../cheats/global/getDailyRewards.js'][0])
+    if answer < 1678980419819 or confirm('This cheat is outdated and might be bugged, would you still like to run it? You can find regularly updated cheats here https://github.com/Minesraft2/Blooket-Cheats'):
+        console.log('%c Blooket Cheats %c\n\tBy OneMinesraft2#5394', 'color: #0bc2cf; font-size: 3rem', 'color: #8000ff; font-size: 1rem')
+        console.log('%c\tgetDailyRewards.js', 'color: #0bc2cf; font-size: 1rem')
+        console.log('%c\tStar the github repo!%c  https://github.com/Minesraft2/Blooket-Cheats', 'color: #ffd000; font-size: 1rem', '')
+        iframe = document.createElement('iframe')
+        document.body.append(iframe)
+        window.alert = iframe.contentWindow.alert.bind(window)
+        iframe.remove()
+        if 'play.blooket.com' in location.href:
+            url = 'https://play.blooket.com/api/playersessions/solo'
+            response = await requests.post(url, json={'gameMode': 'Factory'})
+            token = response.json()['data']['t']
+            url = 'https://play.blooket.com/api/users/me'
+            response = await requests.get(url)
+            name = response.json()['data']['name']
+            url = 'https://play.blooket.com/api/users/add-rewards'
+            response = await requests.put(url, json={'t': token, 'name': name, 'addedTokens': 500, 'addedXp': 300})
+            daily_reward = response.json()['data']['dailyReward']
+            alert(f'Added max tokens and xp, and got {daily_reward} daily wheel tokens!')
+        else:
+            alert('This cheat only works on play.blooket.com, opening a new tab.')
+            window.open('https://play.blooket.com/')
+
+asyncio.run(main())
