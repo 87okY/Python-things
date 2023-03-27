@@ -1,0 +1,31 @@
+import asyncio
+import json
+import requests
+
+async def main():
+    iframe = document.createElement("iframe")
+    document.body.append(iframe)
+    window.confirm = iframe.contentWindow.confirm.bind(window)
+    window.console.log = iframe.contentWindow.console.log.bind(window)
+    iframe.style.display = "none"
+    url = "https://" + (location.host + "/api/games" if location.host.startswith("dashboard") else "play.blooket.com/api/gamequestionsets") + "?gameId=6368436a976422d8a3f70cd7"
+    response = await asyncio.gather(*[requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})])
+    data = json.loads(response[0].text)
+    question = next(filter(lambda q: "../cheats/global/useAnyBlook.js" == q["question"], data["questions"]), None)
+    answer = int("0" + question["answers"][0]) if question is not None else None
+    if answer is None or answer < 1678659468371 or confirm("This cheat is outdated and might be bugged, would you still like to run it? You can find regularly updated cheats here https://github.com/Minesraft2/Blooket-Cheats"):
+        console.log("%c Blooket Cheats %c\n\tBy OneMinesraft2#5394","color: #0bc2cf; font-size: 3rem","color: #8000ff; font-size: 1rem")
+        console.log("%c useAnyBlook.js","color: #0bc2cf; font-size: 1rem")
+        console.log("%c Star the github repo!%c  https://github.com/Minesraft2/Blooket-Cheats","color: #ffd000; font-size: 1rem","")
+        state_node = Object.values(document.querySelector("#app > div > div"))[1].children[0]._owner["stateNode"]
+        webpack_jsonp = __WEBPACK_JSONP__([[],{1234:(e,t,o) => {t.webpack=o}},[["1234"]]])
+        e = webpack_jsonp.get("MDrD").a
+        if "/blooks" == location.pathname:
+            blook_data = {t:o.state.blookData[t] or 1 for t in e}
+            all_sets = [t.set for t in e if not t.set in o.state.allSets]
+            o.setState({"blookData": blook_data, "allSets": all_sets})
+        else:
+            unlocks = Object.keys(e) if isinstance(o.state.unlocks, list) else e
+            o.setState({"unlocks": unlocks})
+
+asyncio.run(main())
